@@ -260,6 +260,36 @@ async function mcp(req: Request, store: Store) {
   return new Response(res.body, { status: res.status, headers });
 }
 
+const PRIVACY = `Pinterest MCP (read-only) - Privacy Policy
+Last updated: 2026-11-11
+
+What this service is
+Pinterest MCP is a read-only connector that lets an AI assistant (such as Claude) read the
+Pinterest boards and pins of the person who signs in. It cannot create, edit or delete anything.
+
+What data it accesses
+Only the signed-in account's own boards, board sections, pins and basic profile (username),
+using the scopes boards:read, boards:read_secret, pins:read, pins:read_secret, user_accounts:read.
+It never accesses other people's private data.
+
+How data is used
+Board and pin data is fetched on demand when the assistant calls a tool and is passed straight
+back to that assistant session. It is not stored, sold, shared, used for advertising, or used to
+train models by this service.
+
+What is stored
+Only what is needed to keep you signed in: your Pinterest access and refresh tokens, encrypted
+at rest (AES-256-GCM), and this service's own session tokens, stored as one-way hashes. Tokens
+expire automatically (access 1 hour, refresh 30 days, sign-in grant 90 days).
+
+Revoking access
+Remove the connector in your AI client, or revoke the app in Pinterest under
+Settings > Security and logins > Apps. Revoked or expired tokens are deleted.
+
+Contact
+Open an issue at https://github.com/careerhubau-spec/pinterest-mcp
+`;
+
 // ---------- router ----------
 async function handle(req: Request): Promise<Response> {
   if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
@@ -280,6 +310,7 @@ async function handle(req: Request): Promise<Response> {
   if (path === '/callback' && get) return callback(url, store);
   if (path === '/token' && req.method === 'POST') return token(req, store);
   if (path === '/mcp' || (path === '/' && req.method === 'POST')) return mcp(req, store);
+  if (path === '/privacy' && get) return new Response(PRIVACY, { headers: { 'content-type': 'text/plain; charset=utf-8', ...CORS } });
   if (path === '/' && get) return json({ name: 'Pinterest MCP (read-only)', mcp_url: `${BASE}/mcp`, docs: 'https://github.com/careerhubau-spec/pinterest-mcp' });
   return json({ error: 'not_found' }, 404);
 }
