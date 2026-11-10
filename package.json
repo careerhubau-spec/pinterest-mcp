@@ -1,13 +1,14 @@
 {
   "name": "pinterest-mcp",
-  "version": "1.0.0",
-  "description": "Read-only Model Context Protocol (MCP) server that gives Claude and other AI agents access to your Pinterest boards and pins for design research",
+  "version": "1.1.0",
+  "description": "Read-only Pinterest MCP server for Claude: hosted (OAuth 2.1, claude.ai connector) and local (stdio) from one codebase",
   "main": "server.mjs",
   "scripts": {
     "start": "node server.mjs",
     "auth": "node auth.mjs",
     "status": "node auth.mjs --status",
-    "check": "node --check server.mjs && node --check pinterest.mjs && node --check auth.mjs"
+    "check": "node --check server.mjs && node --check keychain.mjs && node --check auth.mjs && node --check src/pinterest.mjs && node --check src/tools.mjs && deno check --config supabase/functions/pinterest-mcp/deno.json supabase/functions/pinterest-mcp/index.ts",
+    "test": "node --test test/*.test.mjs"
   },
   "keywords": [
     "mcp",
@@ -29,8 +30,5 @@
   },
   "engines": {
     "node": ">=18"
-  },
-  "os": [
-    "darwin"
-  ]
+  }
 }

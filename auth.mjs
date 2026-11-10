@@ -3,7 +3,9 @@
 import http from 'node:http';
 import { execFile } from 'node:child_process';
 import { randomBytes } from 'node:crypto';
-import { kcGet, kcSet, tokenRequest, SCOPES, REDIRECT, api } from './pinterest.mjs';
+import { kcGet, kcSet, tokenRequest, REDIRECT, accessToken } from './keychain.mjs';
+import { SCOPES, createPinterest } from './src/pinterest.mjs';
+const api = (path) => createPinterest({ getToken: accessToken }).api(path);
 const arg = n => { const i = process.argv.indexOf(n); return i > 0 ? process.argv[i + 1] : null; };
 if (arg('--client-id')) kcSet('client_id', arg('--client-id'));
 if (arg('--client-secret')) kcSet('client_secret', arg('--client-secret'));
