@@ -1,0 +1,36 @@
+{
+  "name": "pinterest-mcp",
+  "version": "1.0.0",
+  "description": "Read-only Model Context Protocol (MCP) server that gives Claude and other AI agents access to your Pinterest boards and pins for design research",
+  "main": "server.mjs",
+  "scripts": {
+    "start": "node server.mjs",
+    "auth": "node auth.mjs",
+    "status": "node auth.mjs --status",
+    "check": "node --check server.mjs && node --check pinterest.mjs && node --check auth.mjs"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "pinterest",
+    "claude",
+    "ai-agents",
+    "design"
+  ],
+  "author": "Phil Chindamo",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "zod": "^3.25.76"
+  },
+  "bin": {
+    "pinterest-mcp": "server.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "os": [
+    "darwin"
+  ]
+}
